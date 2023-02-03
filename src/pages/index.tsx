@@ -1,32 +1,33 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+const TOTAL_ELAPSED_TIME_KEY = "totalTime";
 
 export default function Home() {
-  const [timeInvested, setTimeInvested] = useState(0);
-  const [startTime, setStartTime] = useState(0);
+  const [totalElapsedTime, setTotalElapsedTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
+  const intervalRef = useRef(null);
 
-  function handleStartClick() {
-    setStartTime(Date.now());
-    setIsRunning(true);
-  }
+  const handleStartClick = () => {
+    clearInterval(intervalRef.current);
 
-  function handleStopClick() {
-    setIsRunning(false);
-  }
+    const checkpointTotal = totalElapsedTime;
+    const intervalStartTime = Date.now();
 
-  useEffect(() => {
-    if (isRunning) {
-      const timer = setTimeout(() => {
-        setTimeInvested(timeInvested + Date.now() - startTime);
-        // setCookie('timeInvested', timeInvested)
-        setStartTime(Date.now());
-      }, 1000);
+    intervalRef.current = setInterval(() => {
+      let timePassed = Date.now() - intervalStartTime;
 
-      return () => clearTimeout(timer);
-    }
-  }, [startTime, timeInvested, isRunning]);
+      setTotalElapsedTime(checkpointTotal + timePassed);
+    }, 100);
+  };
+
+  const handleStopClick = () => {
+    clearInterval(intervalRef.current);
+  };
+
+  const elpasedSeconds = totalElapsedTime / 1000;
 
   return (
     <>
@@ -40,8 +41,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <input type="text" defaultValue="Learning Piano" />
-        <div>{Math.floor(timeInvested / 1000)} s</div>
+        <input type="text" defaultValue="Learning React" />
+        <div>{elpasedSeconds.toFixed(3)} s</div>
         <button onClick={handleStartClick}>Start</button>
         <button onClick={handleStopClick}>Stop</button>
       </main>
