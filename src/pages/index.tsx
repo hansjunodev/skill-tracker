@@ -27,6 +27,19 @@ export default function Home() {
     clearInterval(intervalRef.current);
   };
 
+  useEffect(() => {
+    const savedData = localStorage.getItem(TOTAL_ELAPSED_TIME_KEY);
+    if (savedData != null) {
+      setTotalElapsedTime(parseInt(savedData));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (totalElapsedTime > 0) {
+      localStorage.setItem(TOTAL_ELAPSED_TIME_KEY, totalElapsedTime);
+    }
+  }, [totalElapsedTime]);
+
   const elpasedSeconds = totalElapsedTime / 1000;
 
   return (
