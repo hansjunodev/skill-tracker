@@ -63,7 +63,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SkillCard title='Learning React' />
+        <SkillCard title='Learning Webdev' />
+        <SkillCard title='Playing Piano' />
+        <SkillCard title='Exercising' />
       </main>
     </>
   );
