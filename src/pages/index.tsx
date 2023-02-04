@@ -2,9 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-const TOTAL_ELAPSED_TIME_KEY = "totalTime";
-
-export default function Home() {
+function SkillCard({ title }) {
   const [totalElapsedTime, setTotalElapsedTime] = useState(0);
   const [currentTime, setCurrentTime] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -28,7 +26,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const savedData = localStorage.getItem(TOTAL_ELAPSED_TIME_KEY);
+    const savedData = localStorage.getItem(title);
     if (savedData != null) {
       setTotalElapsedTime(parseInt(savedData));
     }
@@ -36,12 +34,23 @@ export default function Home() {
 
   useEffect(() => {
     if (totalElapsedTime > 0) {
-      localStorage.setItem(TOTAL_ELAPSED_TIME_KEY, totalElapsedTime);
+      localStorage.setItem(title, totalElapsedTime);
     }
-  }, [totalElapsedTime]);
+  }, [totalElapsedTime, title]);
 
   const elpasedSeconds = totalElapsedTime / 1000;
 
+  return (
+    <>
+      <input type="text" defaultValue={title} />
+      <div>{Math.floor(elpasedSeconds)} s</div>
+      <button onClick={handleStartClick}>Start</button>
+      <button onClick={handleStopClick}>Stop</button>
+    </>
+  );
+}
+
+export default function Home() {
   return (
     <>
       <Head>
@@ -54,10 +63,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <input type="text" defaultValue="Learning React" />
-        <div>{Math.floor(elpasedSeconds)} s</div>
-        <button onClick={handleStartClick}>Start</button>
-        <button onClick={handleStopClick}>Stop</button>
+        <SkillCard title='Learning React' />
       </main>
     </>
   );
