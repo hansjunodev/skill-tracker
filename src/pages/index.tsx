@@ -20,7 +20,7 @@ export default function Home() {
       let timePassed = Date.now() - intervalStartTime;
 
       setTotalElapsedTime(checkpointTotal + timePassed);
-    }, 100);
+    }, 1000);
   };
 
   const handleStopClick = () => {
@@ -55,7 +55,7 @@ export default function Home() {
       </Head>
       <main>
         <input type="text" defaultValue="Learning React" />
-        <div>{elpasedSeconds.toFixed(3)} s</div>
+        <div>{Math.floor(elpasedSeconds)} s</div>
         <button onClick={handleStartClick}>Start</button>
         <button onClick={handleStopClick}>Stop</button>
       </main>
