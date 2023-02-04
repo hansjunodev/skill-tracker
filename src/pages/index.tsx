@@ -41,12 +41,12 @@ function SkillCard({ title }) {
   const elpasedSeconds = totalElapsedTime / 1000;
 
   return (
-    <>
+    <div>
       <input type="text" defaultValue={title} />
       <div>{Math.floor(elpasedSeconds)} s</div>
       <button onClick={handleStartClick}>Start</button>
       <button onClick={handleStopClick}>Stop</button>
-    </>
+    </div>
   );
 }
 
