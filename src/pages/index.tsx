@@ -1,3 +1,4 @@
+import { toTimeObject } from "@/utils/utils";
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
@@ -38,12 +39,13 @@ function SkillCard({ title }) {
     }
   }, [totalElapsedTime, title]);
 
-  const elpasedSeconds = totalElapsedTime / 1000;
+  const timeObj = toTimeObject(totalElapsedTime)
+  const timeString = `${timeObj.hours} h ${timeObj.minutes} m ${timeObj.seconds} s`
 
   return (
     <div>
       <input type="text" defaultValue={title} />
-      <div>{Math.floor(elpasedSeconds)} s</div>
+      <div>{timeString}</div>
       <button onClick={handleStartClick}>Start</button>
       <button onClick={handleStopClick}>Stop</button>
     </div>
