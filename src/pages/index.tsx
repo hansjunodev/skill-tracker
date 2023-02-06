@@ -30,7 +30,7 @@ function SkillCard({ title }) {
     if (savedData != null) {
       setTotalElapsedTime(parseInt(savedData));
     }
-  }, []);
+  }, [title]);
 
   useEffect(() => {
     if (totalElapsedTime > 0) {
@@ -63,9 +63,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SkillCard title='Learning Webdev' />
-        <SkillCard title='Playing Piano' />
-        <SkillCard title='Exercising' />
+        <SkillCard title="Learning Webdev" />
+        <SkillCard title="Playing Piano" />
+        <SkillCard title="Exercising" />
       </main>
     </>
   );
