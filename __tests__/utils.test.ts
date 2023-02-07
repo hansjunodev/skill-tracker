@@ -16,7 +16,7 @@ test("convert milliseconds into a readable time duration", () => {
     minutes: 13,
     seconds: 37,
   });
-  expect(toTimeObject(3.312e+8)).toStrictEqual({
+  expect(toTimeObject(3.312e8)).toStrictEqual({
     hours: 92,
     minutes: 0,
     seconds: 0,
