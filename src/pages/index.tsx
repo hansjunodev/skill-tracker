@@ -1,24 +1,25 @@
 import { toTimeObject } from "@/utils/utils";
 import Head from "next/head";
-import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-function SkillCard({ title }) {
-  const [totalElapsedTime, setTotalElapsedTime] = useState(0);
-  const [currentTime, setCurrentTime] = useState(null);
-  const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef(null);
+interface SkillCardProps {
+  title: string;
+}
+
+function SkillCard({ title }: SkillCardProps): JSX.Element {
+  const [totalMilliseconds, setTotalMilliseconds] = useState(0);
+  const intervalRef = useRef<number>(null);
 
   const handleStartClick = () => {
     clearInterval(intervalRef.current);
 
-    const checkpointTotal = totalElapsedTime;
+    const checkpointTotal = totalMilliseconds;
     const intervalStartTime = Date.now();
 
     intervalRef.current = setInterval(() => {
-      let timePassed = Date.now() - intervalStartTime;
+      const timePassed = Date.now() - intervalStartTime;
 
-      setTotalElapsedTime(checkpointTotal + timePassed);
+      setTotalMilliseconds(checkpointTotal + timePassed);
     }, 1000);
   };
 
@@ -29,17 +30,17 @@ function SkillCard({ title }) {
   useEffect(() => {
     const savedData = localStorage.getItem(title);
     if (savedData != null) {
-      setTotalElapsedTime(parseInt(savedData));
+      setTotalMilliseconds(parseInt(savedData));
     }
   }, [title]);
 
   useEffect(() => {
-    if (totalElapsedTime > 0) {
-      localStorage.setItem(title, totalElapsedTime);
+    if (totalMilliseconds > 0) {
+      localStorage.setItem(title, totalMilliseconds);
     }
-  }, [totalElapsedTime, title]);
+  }, [totalMilliseconds, title]);
 
-  const timeObj = toTimeObject(totalElapsedTime)
+  const timeObj = toTimeObject(totalMilliseconds)
   const timeString = `${timeObj.hours} h ${timeObj.minutes} m ${timeObj.seconds} s`
 
   return (
@@ -52,7 +53,7 @@ function SkillCard({ title }) {
   );
 }
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <>
       <Head>
