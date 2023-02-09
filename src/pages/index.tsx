@@ -3,7 +3,6 @@ import Head from "next/head";
 import React, { useReducer } from "react";
 import { SkillsAction, SkillsActionKind, SkillsState } from "@/types/skill";
 
-
 const initialData: SkillsState = {
   items: [
     {
@@ -27,14 +26,15 @@ const initialData: SkillsState = {
       currentEffort: 0,
       goalEffort: 0,
     },
-  ]
+  ],
 };
 
-const skillsReducer = (state: SkillsState, action: SkillsAction): SkillsState => {
+const skillsReducer = (
+  state: SkillsState,
+  action: SkillsAction
+): SkillsState => {
   const { items } = state;
   const { type, payload } = action;
-
-  console.log(payload)
 
   switch (type) {
     case SkillsActionKind.ADD_DURATION: {
@@ -46,10 +46,9 @@ const skillsReducer = (state: SkillsState, action: SkillsAction): SkillsState =>
         }
       });
 
-
       return {
-        items: newItems
-      }
+        items: newItems,
+      };
     }
   }
 };
@@ -70,11 +69,7 @@ export default function Home(): JSX.Element {
       </Head>
       <main>
         {state.items.map((skill) => (
-          <SkillCard
-            key={skill.id}
-            skill={skill}
-            dispatch={dispatch}
-          />
+          <SkillCard key={skill.id} skill={skill} dispatch={dispatch} />
         ))}
         <button>Add Skill</button>
       </main>

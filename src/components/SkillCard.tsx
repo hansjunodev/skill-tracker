@@ -7,7 +7,10 @@ interface SkillCardProps {
   dispatch: Dispatch<SkillsAction>;
 }
 
-export default function SkillCard({ skill, dispatch }: SkillCardProps): JSX.Element {
+export default function SkillCard({
+  skill,
+  dispatch,
+}: SkillCardProps): JSX.Element {
   const intervalRef = useRef<number>(null);
 
   const handleStartClick = () => {
@@ -22,8 +25,8 @@ export default function SkillCard({ skill, dispatch }: SkillCardProps): JSX.Elem
         type: SkillsActionKind.ADD_DURATION,
         payload: {
           id: skill.id,
-          duration: timePassed
-        }
+          duration: timePassed,
+        },
       });
 
       intervalStartTime = Date.now();
