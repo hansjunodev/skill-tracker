@@ -1,24 +1,32 @@
+import { Skill, SkillsAction, SkillsActionKind } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Dispatch } from "react";
 
 interface SkillCardProps {
-  title: string;
+  skill: Skill;
+  dispatch: Dispatch<SkillsAction>;
 }
 
-export default function SkillCard({ title }: SkillCardProps): JSX.Element {
-  const [totalMilliseconds, setTotalMilliseconds] = useState(0);
+export default function SkillCard({ skill, dispatch }: SkillCardProps): JSX.Element {
   const intervalRef = useRef<number>(null);
 
   const handleStartClick = () => {
     clearInterval(intervalRef.current);
 
-    const checkpointTotal = totalMilliseconds;
-    const intervalStartTime = Date.now();
+    let intervalStartTime = Date.now();
 
     intervalRef.current = setInterval(() => {
       const timePassed = Date.now() - intervalStartTime;
 
-      setTotalMilliseconds(checkpointTotal + timePassed);
+      dispatch({
+        type: SkillsActionKind.ADD_DURATION,
+        payload: {
+          id: skill.id,
+          duration: timePassed
+        }
+      });
+
+      intervalStartTime = Date.now();
     }, 1000);
   };
 
@@ -26,25 +34,12 @@ export default function SkillCard({ title }: SkillCardProps): JSX.Element {
     clearInterval(intervalRef.current);
   };
 
-  useEffect(() => {
-    const savedData = localStorage.getItem(title);
-    if (savedData != null) {
-      setTotalMilliseconds(parseInt(savedData));
-    }
-  }, [title]);
-
-  useEffect(() => {
-    if (totalMilliseconds > 0) {
-      localStorage.setItem(title, totalMilliseconds);
-    }
-  }, [totalMilliseconds, title]);
-
-  const timeObj = toTimeObject(totalMilliseconds);
+  const timeObj = toTimeObject(skill.duration);
   const timeString = `${timeObj.hours} h ${timeObj.minutes} m ${timeObj.seconds} s`;
 
   return (
     <div>
-      <input type="text" defaultValue={title} />
+      <input type="text" defaultValue={skill.title} />
       <div>{timeString}</div>
       <button onClick={handleStartClick}>Start</button>
       <button onClick={handleStopClick}>Stop</button>
