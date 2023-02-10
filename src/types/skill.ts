@@ -24,6 +24,7 @@ export interface AddDurationAction {
 
 export interface CreateSkillAction {
   type: SkillsActionType.CREATE_SKILL;
+  payload: string;
 }
 
 export interface DeleteSkillAction {

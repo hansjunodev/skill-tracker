@@ -3,6 +3,7 @@ import Head from "next/head";
 import React, { Reducer, useEffect, useReducer } from "react";
 import { SkillsActionType, SkillsAction, Skill } from "@/types/skill";
 import { v4 as uuidv4 } from "uuid";
+import AddSkill from "@/components/AddSkill";
 
 const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
   const { type, payload } = action;
@@ -18,7 +19,7 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
           currentEffort: 0,
           duration: 0,
           goalEFfort: 0,
-          title: "",
+          title: payload,
         },
       ];
     }
@@ -52,8 +53,8 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
 export default function Home(): JSX.Element {
   const [state, dispatch] = useReducer(skillsReducer, []);
 
-  const handleAddSkillClick = () => {
-    dispatch({ type: SkillsActionType.CREATE_SKILL });
+  const handleAddSkillClick = (title: string) => {
+    dispatch({ type: SkillsActionType.CREATE_SKILL, payload: title });
   };
 
   useEffect(() => {
@@ -90,8 +91,7 @@ export default function Home(): JSX.Element {
         ))}
         <br />
         <>
-          <input type="text" defaultValue="Learning Webdev" />
-          <button onClick={handleAddSkillClick}>Add Skill</button>
+          <AddSkill onAddSkill={handleAddSkillClick} />
         </>
       </main>
     </>
