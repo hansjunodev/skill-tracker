@@ -44,9 +44,21 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
     case SkillsActionType.CLEAR:
       return [];
     case SkillsActionType.LOAD_STATE:
-      console.log(payload);
       if (payload.length > 10) return payload.slice(0, 10);
       return [...payload];
+    case SkillsActionType.CHANGE_TITLE: {
+      const { id, title } = payload;
+
+      const newItems = state.map((s) => {
+        if (s.id === id) {
+          return { ...s, title };
+        } else {
+          return s;
+        }
+      });
+
+      return newItems;
+    }
   }
 };
 

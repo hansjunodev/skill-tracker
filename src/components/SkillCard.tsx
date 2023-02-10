@@ -12,6 +12,8 @@ export default function SkillCard({
   dispatch,
 }: SkillCardProps): JSX.Element {
   const intervalRef = useRef<number>(null);
+  const [isEditing, setIsEditing] = useState(false)
+  const [titleText, setTitleText] = useState('')
 
   const handleStartClick = () => {
     clearInterval(intervalRef.current);
@@ -34,15 +36,36 @@ export default function SkillCard({
     clearInterval(intervalRef.current);
   };
 
+  const handleEditClick = () => {
+    if (isEditing) {
+      dispatch({ type: SkillsActionType.CHANGE_TITLE, payload: { id: skill.id, title: titleText } })
+    }
+    setIsEditing(!isEditing)
+  }
+
   const timeObj = toTimeObject(skill.duration);
   const timeString = `${timeObj.hours} h ${timeObj.minutes} m ${timeObj.seconds} s`;
 
+  let content;
+
+  if (isEditing) {
+    content = <input type="text" onChange={(e) => setTitleText(e.target.value)} value={titleText} />
+  } else {
+    content = <>{skill.title}</>
+  }
+
   return (
     <div>
-      <input type="text" defaultValue={skill.title} />
-      <div>{timeString}</div>
+      <div>
+        {content}{' '}
+        <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
+        <button onClick={() => dispatch({ type: SkillsActionType.DELETE_SKILL, payload: { id: skill.id } })}>Delete</button>
+      </div>
+      <div>
+        {timeString}{' '}
+      </div>
       <button onClick={handleStartClick}>Start</button>
       <button onClick={handleStopClick}>Stop</button>
-    </div>
+    </div >
   );
 }

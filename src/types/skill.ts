@@ -12,6 +12,7 @@ export enum SkillsActionType {
   DELETE_SKILL = "DELETE_SKILL",
   CLEAR = "CLEAR",
   LOAD_STATE = "LOAD_STATE",
+  CHANGE_TITLE = "CHANGE_TITLE"
 }
 
 export interface AddDurationAction {
@@ -43,9 +44,18 @@ export interface LoadStateAction {
   payload: Skill[];
 }
 
+export interface ChangeTitleAction {
+  type: SkillsActionType.CHANGE_TITLE;
+  payload: {
+    id: string;
+    title: string;
+  };
+}
+
 export type SkillsAction =
   | AddDurationAction
   | CreateSkillAction
   | DeleteSkillAction
   | ClearAction
-  | LoadStateAction;
+  | LoadStateAction
+  | ChangeTitleAction;
