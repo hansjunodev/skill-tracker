@@ -1,4 +1,4 @@
-import { Skill, SkillsAction, SkillsActionKind } from "@/types/skill";
+import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
 import { useState, useEffect, useRef, Dispatch } from "react";
 
@@ -22,11 +22,8 @@ export default function SkillCard({
       const timePassed = Date.now() - intervalStartTime;
 
       dispatch({
-        type: SkillsActionKind.ADD_DURATION,
-        payload: {
-          id: skill.id,
-          duration: timePassed,
-        },
+        type: SkillsActionType.ADD_DURATION,
+        payload: { id: skill.id, durationToAdd: timePassed },
       });
 
       intervalStartTime = Date.now();
