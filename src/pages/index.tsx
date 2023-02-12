@@ -1,6 +1,6 @@
 import SkillCard from "@/components/SkillCard";
 import Head from "next/head";
-import React, { Reducer, useEffect, useReducer } from "react";
+import React, { Reducer, useEffect, useReducer, useRef } from "react";
 import { SkillsActionType, SkillsAction, Skill } from "@/types/skill";
 import { v4 as uuidv4 } from "uuid";
 import AddSkill from "@/components/AddSkill";
@@ -64,24 +64,28 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
 
 export default function Home(): JSX.Element {
   const [state, dispatch] = useReducer(skillsReducer, []);
+  const isFirstRender = useRef<boolean>(true);
 
   const handleAddSkillClick = (title: string) => {
     dispatch({ type: SkillsActionType.CREATE_SKILL, payload: title });
   };
 
   useEffect(() => {
-    const savedState = JSON.parse(localStorage.getItem("state")) as Skill[];
+    const saved = localStorage.getItem("state");
+    const initialState = saved ? JSON.parse(saved) as Skill[] : [];
 
-    if (savedState !== null) {
+    if (initialState !== null) {
       dispatch({
         type: SkillsActionType.LOAD_STATE,
-        payload: savedState,
+        payload: initialState,
       });
     }
   }, []);
 
   useEffect(() => {
-    if (state.length > 0) {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
       localStorage.setItem("state", JSON.stringify(state));
     }
   }, [state]);
