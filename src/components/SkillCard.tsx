@@ -42,6 +42,8 @@ export default function SkillCard({
         type: SkillsActionType.CHANGE_TITLE,
         payload: { id: skill.id, title: titleText },
       });
+    } else {
+      setTitleText(skill.title)
     }
     setIsEditing(!isEditing);
   };
