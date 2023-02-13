@@ -43,7 +43,7 @@ export default function SkillCard({
         payload: { id: skill.id, title: titleText },
       });
     } else {
-      setTitleText(skill.title)
+      setTitleText(skill.title);
     }
     setIsEditing(!isEditing);
   };
@@ -82,6 +82,9 @@ export default function SkillCard({
         </button>
       </div>
       <div>{timeString} </div>
+      <div>
+        Progress: {skill.currentEffort}/{skill.goalEFfort}
+      </div>
       <button onClick={handleStartClick}>Start</button>
       <button onClick={handleStopClick}>Stop</button>
     </div>

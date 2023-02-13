@@ -72,7 +72,7 @@ export default function Home(): JSX.Element {
 
   useEffect(() => {
     const saved = localStorage.getItem("state");
-    const initialState = saved ? JSON.parse(saved) as Skill[] : [];
+    const initialState = saved ? (JSON.parse(saved) as Skill[]) : [];
 
     if (initialState !== null) {
       dispatch({
