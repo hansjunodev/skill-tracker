@@ -5,11 +5,13 @@ import { useState, useEffect, useRef, Dispatch } from "react";
 interface SkillCardProps {
   skill: Skill;
   dispatch: Dispatch<SkillsAction>;
+  onAction: (MouseEvent, string) => void
 }
 
 export default function SkillCard({
   skill,
   dispatch,
+  onAction,
 }: SkillCardProps): JSX.Element {
   const intervalRef = useRef<number>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -85,8 +87,8 @@ export default function SkillCard({
       <div>
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
-      <button onClick={handleStartClick}>Start</button>
-      <button onClick={handleStopClick}>Stop</button>
+      <button onClick={(e) => onAction(e, skill.id)}>Start</button>
+      <button onClick={(e) => onAction(e, skill.id)}>Stop</button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import SkillCard from "@/components/SkillCard";
 import Head from "next/head";
-import React, { Reducer, useEffect, useReducer, useRef } from "react";
+import React, { KeyboardEventHandler, MouseEventHandler, Reducer, useEffect, useReducer, useRef, useState } from "react";
 import { SkillsActionType, SkillsAction, Skill } from "@/types/skill";
 import { v4 as uuidv4 } from "uuid";
 import AddSkill from "@/components/AddSkill";
@@ -65,10 +65,46 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
 export default function Home(): JSX.Element {
   const [state, dispatch] = useReducer(skillsReducer, []);
   const isFirstRender = useRef<boolean>(true);
+  const intervalRef = useRef<number>(null);
+  const [runningIds, setRunningIds] = useState<string[]>([]);
 
   const handleAddSkillClick = (title: string) => {
     dispatch({ type: SkillsActionType.CREATE_SKILL, payload: title });
   };
+
+  const handleKeyUp: KeyboardEventHandler = (e) => {
+    console.log(e.key);
+  }
+
+  const handleAction = (e: MouseEvent, skillId: string) => {
+    if (e.target.innerHTML === "Start") {
+      if (!runningIds.includes(skillId)) {
+        setRunningIds([...runningIds, skillId]);
+      }
+    } else {
+      setRunningIds(runningIds.filter(id => id !== skillId))
+    }
+  }
+
+  useEffect(() => {
+    let intervalStartTime = Date.now();
+
+    clearInterval(intervalRef.current);
+
+    console.log(runningIds)
+    intervalRef.current = setInterval(() => {
+      const timePassed = Date.now() - intervalStartTime;
+
+      runningIds.forEach(id => dispatch({
+        type: SkillsActionType.ADD_DURATION,
+        payload: { id, durationToAdd: timePassed },
+      }))
+
+      intervalStartTime = Date.now();
+    }, 1000);
+
+    return () => clearInterval(intervalRef.current);
+  }, [runningIds])
 
   useEffect(() => {
     const saved = localStorage.getItem("state");
@@ -90,6 +126,12 @@ export default function Home(): JSX.Element {
     }
   }, [state]);
 
+  useEffect(() => {
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => document.removeEventListener('keyup', handleKeyUp);
+  }, [])
+
   return (
     <>
       <Head>
@@ -103,7 +145,7 @@ export default function Home(): JSX.Element {
       </Head>
       <main>
         {state.map((skill) => (
-          <SkillCard key={skill.id} skill={skill} dispatch={dispatch} />
+          <SkillCard key={skill.id} skill={skill} dispatch={dispatch} onAction={handleAction} />
         ))}
         <br />
         <>
