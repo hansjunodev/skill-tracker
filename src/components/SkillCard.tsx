@@ -5,38 +5,14 @@ import { useState, useEffect, useRef, Dispatch } from "react";
 interface SkillCardProps {
   skill: Skill;
   dispatch: Dispatch<SkillsAction>;
-  onAction: (MouseEvent, string) => void
 }
 
 export default function SkillCard({
   skill,
   dispatch,
-  onAction,
 }: SkillCardProps): JSX.Element {
-  const intervalRef = useRef<number>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [titleText, setTitleText] = useState("");
-
-  const handleStartClick = () => {
-    clearInterval(intervalRef.current);
-
-    let intervalStartTime = Date.now();
-
-    intervalRef.current = setInterval(() => {
-      const timePassed = Date.now() - intervalStartTime;
-
-      dispatch({
-        type: SkillsActionType.ADD_DURATION,
-        payload: { id: skill.id, durationToAdd: timePassed },
-      });
-
-      intervalStartTime = Date.now();
-    }, 1000);
-  };
-
-  const handleStopClick = () => {
-    clearInterval(intervalRef.current);
-  };
 
   const handleEditClick = () => {
     if (isEditing) {
@@ -87,8 +63,20 @@ export default function SkillCard({
       <div>
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
-      <button onClick={(e) => onAction(e, skill.id)}>Start</button>
-      <button onClick={(e) => onAction(e, skill.id)}>Stop</button>
+      <button
+        onClick={(e) =>
+          dispatch({ type: SkillsActionType.START, payload: skill.id })
+        }
+      >
+        Start
+      </button>
+      <button
+        onClick={(e) =>
+          dispatch({ type: SkillsActionType.STOP, payload: skill.id })
+        }
+      >
+        Stop
+      </button>
     </div>
   );
 }

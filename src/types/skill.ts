@@ -4,6 +4,7 @@ export interface Skill {
   duration: number;
   currentEffort: number;
   goalEFfort: number;
+  isRunning: boolean;
 }
 
 export enum SkillsActionType {
@@ -13,6 +14,8 @@ export enum SkillsActionType {
   CLEAR = "CLEAR",
   LOAD_STATE = "LOAD_STATE",
   CHANGE_TITLE = "CHANGE_TITLE",
+  START = "START",
+  STOP = "STOP",
 }
 
 export interface AddDurationAction {
@@ -52,10 +55,22 @@ export interface ChangeTitleAction {
   };
 }
 
+export interface StartAction {
+  type: SkillsActionType.START;
+  payload: string;
+}
+
+export interface StopAction {
+  type: SkillsActionType.STOP;
+  payload: string;
+}
+
 export type SkillsAction =
   | AddDurationAction
   | CreateSkillAction
   | DeleteSkillAction
   | ClearAction
   | LoadStateAction
-  | ChangeTitleAction;
+  | ChangeTitleAction
+  | StartAction
+  | StopAction;
