@@ -28,7 +28,7 @@ export default function SkillCard({
   };
 
   const timeObj = toTimeObject(skill.duration);
-  const timeString = `${timeObj.hours} h ${timeObj.minutes} m ${timeObj.seconds} s`;
+  const timeString = `${timeObj.hours}h ${timeObj.minutes}m ${timeObj.seconds}s`;
 
   let content;
 
@@ -74,7 +74,7 @@ export default function SkillCard({
           Delete
         </button>
       </div>
-      <div className="text-center">{timeString} </div>
+      <div className="text-center font-mono">{timeString} </div>
       <div className="text-center">
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
