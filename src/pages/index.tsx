@@ -108,7 +108,7 @@ export default function Home(): JSX.Element {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="flex flex-col items-center space-y-2">
         {state.map((skill) => (
           <SkillCard key={skill.id} skill={skill} dispatch={dispatch} />
         ))}

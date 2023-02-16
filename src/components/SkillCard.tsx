@@ -1,6 +1,7 @@
 import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
 import { useState, useEffect, useRef, Dispatch } from "react";
+import classNames from "classnames";
 
 interface SkillCardProps {
   skill: Skill;
@@ -44,11 +45,25 @@ export default function SkillCard({
   }
 
   return (
-    <div>
-      <div>
-        {content}{" "}
-        <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
+    <div
+      className={classNames(
+        "flex w-full max-w-xs flex-col border-2 border-solid border-black p-2",
+        {
+          "bg-green-100": skill.isRunning,
+          "bg-white": !skill.isRunning,
+        }
+      )}
+    >
+      <div className="flex space-x-2">
+        <div className="flex-1">{content} </div>
         <button
+          className="border border-solid border-black bg-white px-1 text-black hover:bg-gray-50"
+          onClick={handleEditClick}
+        >
+          {isEditing ? "Save" : "Edit"}
+        </button>
+        <button
+          className="border border-solid border-black bg-white px-1 text-black hover:bg-gray-50"
           onClick={() =>
             dispatch({
               type: SkillsActionType.DELETE_SKILL,
@@ -59,24 +74,28 @@ export default function SkillCard({
           Delete
         </button>
       </div>
-      <div>{timeString} </div>
-      <div>
+      <div className="text-center">{timeString} </div>
+      <div className="text-center">
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
-      <button
-        onClick={(e) =>
-          dispatch({ type: SkillsActionType.START, payload: skill.id })
-        }
-      >
-        Start
-      </button>
-      <button
-        onClick={(e) =>
-          dispatch({ type: SkillsActionType.STOP, payload: skill.id })
-        }
-      >
-        Stop
-      </button>
+      <div className="flex">
+        <button
+          className="flex-1 border border-solid border-black bg-white text-black hover:bg-gray-50"
+          onClick={() =>
+            dispatch({ type: SkillsActionType.START, payload: skill.id })
+          }
+        >
+          Start
+        </button>
+        <button
+          className="flex-1 border border-solid border-black bg-white text-black hover:bg-gray-50"
+          onClick={() =>
+            dispatch({ type: SkillsActionType.STOP, payload: skill.id })
+          }
+        >
+          Stop
+        </button>
+      </div>
     </div>
   );
 }
