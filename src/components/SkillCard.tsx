@@ -47,7 +47,7 @@ export default function SkillCard({
   return (
     <div
       className={classNames(
-        "flex w-full max-w-xs flex-col border-2 border-solid border-black p-2",
+        "flex w-full flex-col border-2 border-solid border-black p-2",
         {
           "bg-green-100": skill.isRunning,
           "bg-white": !skill.isRunning,
