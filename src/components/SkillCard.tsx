@@ -80,7 +80,10 @@ export default function SkillCard({
       </div>
       <div className="flex">
         <button
-          className="flex-1 border border-solid border-black bg-white text-black hover:bg-gray-50"
+          className={classNames("flex-1 border border-solid border-black", {
+            "cursor-default bg-gray-200 text-gray-300": skill.isRunning,
+            "bg-white text-black hover:bg-gray-50": !skill.isRunning,
+          })}
           onClick={() =>
             dispatch({ type: SkillsActionType.START, payload: skill.id })
           }
@@ -88,7 +91,10 @@ export default function SkillCard({
           Start
         </button>
         <button
-          className="flex-1 border border-solid border-black bg-white text-black hover:bg-gray-50"
+          className={classNames("flex-1 border border-solid border-black", {
+            "bg-white text-black hover:bg-gray-50": skill.isRunning,
+            "cursor-default bg-gray-200 text-gray-300": !skill.isRunning,
+          })}
           onClick={() =>
             dispatch({ type: SkillsActionType.STOP, payload: skill.id })
           }
