@@ -10,50 +10,36 @@ import {
 } from "react";
 import classNames from "classnames";
 
+interface ActionButtonProps {
+  isRunning: boolean;
+  handleActionClick: MouseEventHandler;
+}
+
+const ActionButton: FunctionComponent<ActionButtonProps> = ({
+  isRunning,
+  handleActionClick,
+}) => {
+  const text = isRunning ? "Stop" : "Start";
+  const buttonClass = classNames("flex-1 ", {
+    "bg-red-200 text-black": isRunning,
+    "bg-green-200 text-black": !isRunning,
+  });
+
+  return (
+    <button
+      className={buttonClass}
+      onClick={handleActionClick}
+      disabled={!isRunning}
+    >
+      {text}
+    </button>
+  );
+};
+
 interface SkillCardProps {
   skill: Skill;
   dispatch: Dispatch<SkillsAction>;
 }
-
-interface StartButtonProps {
-  isRunning: boolean;
-  onStartClick: MouseEventHandler;
-}
-
-const StartButton: FunctionComponent<StartButtonProps> = ({
-  isRunning,
-  onStartClick,
-}) => (
-  <button
-    className={classNames("flex-1 border border-solid border-black", {
-      "cursor-default bg-gray-200 text-gray-300": isRunning,
-      "bg-white text-black hover:bg-gray-50": !isRunning,
-    })}
-    onClick={onStartClick}
-  >
-    Start
-  </button>
-);
-
-interface StopButtonProps {
-  isRunning: boolean;
-  onStopClick: MouseEventHandler;
-}
-
-const StopButton: FunctionComponent<StopButtonProps> = ({
-  isRunning,
-  onStopClick,
-}) => (
-  <button
-    className={classNames("flex-1 border border-solid border-black", {
-      "bg-white text-black hover:bg-gray-50": isRunning,
-      "cursor-default bg-gray-200 text-gray-300": !isRunning,
-    })}
-    onClick={onStopClick}
-  >
-    Stop
-  </button>
-);
 
 export default function SkillCard({
   skill,
@@ -61,6 +47,14 @@ export default function SkillCard({
 }: SkillCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [titleText, setTitleText] = useState("");
+
+  const handleActionClick: MouseEventHandler = () => {
+    if (skill.isRunning) {
+      dispatch({ type: SkillsActionType.STOP, payload: skill.id });
+    } else {
+      dispatch({ type: SkillsActionType.START, payload: skill.id });
+    }
+  };
 
   const handleEditClick = () => {
     if (isEditing) {
@@ -125,20 +119,10 @@ export default function SkillCard({
       <div className="text-center">
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
-      <div className="flex">
-        <StartButton
-          isRunning={skill.isRunning}
-          onStartClick={() =>
-            dispatch({ type: SkillsActionType.START, payload: skill.id })
-          }
-        />
-        <StopButton
-          isRunning={skill.isRunning}
-          onStopClick={() =>
-            dispatch({ type: SkillsActionType.STOP, payload: skill.id })
-          }
-        />
-      </div>
+      <ActionButton
+        isRunning={skill.isRunning}
+        handleActionClick={handleActionClick}
+      />
     </div>
   );
 }
