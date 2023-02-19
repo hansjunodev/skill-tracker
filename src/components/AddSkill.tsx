@@ -14,6 +14,7 @@ export default function AddSkill({ onAddSkill }: AddSkillProps): JSX.Element {
         placeholder="Add skill"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyUp={(e) => e.stopPropagation()}
       />
       <button
         className="border border-solid border-black px-2 hover:bg-gray-50"
