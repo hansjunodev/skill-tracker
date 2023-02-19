@@ -1,12 +1,59 @@
 import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
-import { useState, useEffect, useRef, Dispatch } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  Dispatch,
+  FunctionComponent,
+  MouseEventHandler,
+} from "react";
 import classNames from "classnames";
 
 interface SkillCardProps {
   skill: Skill;
   dispatch: Dispatch<SkillsAction>;
 }
+
+interface StartButtonProps {
+  isRunning: boolean;
+  onStartClick: MouseEventHandler;
+}
+
+const StartButton: FunctionComponent<StartButtonProps> = ({
+  isRunning,
+  onStartClick,
+}) => (
+  <button
+    className={classNames("flex-1 border border-solid border-black", {
+      "cursor-default bg-gray-200 text-gray-300": isRunning,
+      "bg-white text-black hover:bg-gray-50": !isRunning,
+    })}
+    onClick={onStartClick}
+  >
+    Start
+  </button>
+);
+
+interface StopButtonProps {
+  isRunning: boolean;
+  onStopClick: MouseEventHandler;
+}
+
+const StopButton: FunctionComponent<StopButtonProps> = ({
+  isRunning,
+  onStopClick,
+}) => (
+  <button
+    className={classNames("flex-1 border border-solid border-black", {
+      "bg-white text-black hover:bg-gray-50": isRunning,
+      "cursor-default bg-gray-200 text-gray-300": !isRunning,
+    })}
+    onClick={onStopClick}
+  >
+    Stop
+  </button>
+);
 
 export default function SkillCard({
   skill,
@@ -79,28 +126,18 @@ export default function SkillCard({
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
       <div className="flex">
-        <button
-          className={classNames("flex-1 border border-solid border-black", {
-            "cursor-default bg-gray-200 text-gray-300": skill.isRunning,
-            "bg-white text-black hover:bg-gray-50": !skill.isRunning,
-          })}
-          onClick={() =>
+        <StartButton
+          isRunning={skill.isRunning}
+          onStartClick={() =>
             dispatch({ type: SkillsActionType.START, payload: skill.id })
           }
-        >
-          Start
-        </button>
-        <button
-          className={classNames("flex-1 border border-solid border-black", {
-            "bg-white text-black hover:bg-gray-50": skill.isRunning,
-            "cursor-default bg-gray-200 text-gray-300": !skill.isRunning,
-          })}
-          onClick={() =>
+        />
+        <StopButton
+          isRunning={skill.isRunning}
+          onStopClick={() =>
             dispatch({ type: SkillsActionType.STOP, payload: skill.id })
           }
-        >
-          Stop
-        </button>
+        />
       </div>
     </div>
   );
