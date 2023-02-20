@@ -100,7 +100,7 @@ export default function SkillCard({
   return (
     <div
       className={classNames(
-        "flex w-full flex-col p-2 select-none shadow shadow-black",
+        "flex w-full select-none flex-col p-2 shadow shadow-black",
         {
           "bg-green-100": skill.isRunning,
           "bg-white": !skill.isRunning,
@@ -113,13 +113,13 @@ export default function SkillCard({
       <div className="flex space-x-2">
         <div className="flex-1">{content} </div>
         <button
-          className="border border-solid border-black bg-white px-1 text-black hover:bg-gray-50"
+          className="rounded px-1 text-black hover:shadow hover:shadow-black"
           onClick={handleEditClick}
         >
           {isEditing ? "Save" : "Edit"}
         </button>
         <button
-          className="border border-solid border-black bg-white px-1 text-black hover:bg-gray-50"
+          className="rounded px-1 text-black hover:shadow hover:shadow-black"
           onClick={handleDeleteClick}
         >
           Delete
