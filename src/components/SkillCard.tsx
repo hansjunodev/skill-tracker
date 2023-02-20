@@ -20,16 +20,13 @@ const ActionButton: FunctionComponent<ActionButtonProps> = ({
   handleActionClick,
 }) => {
   const text = isRunning ? "Stop" : "Start";
-  const buttonClass = classNames("flex-1 ", {
+  const buttonClass = classNames("flex-1 rounded", {
     "bg-red-200 text-black": isRunning,
     "bg-green-200 text-black": !isRunning,
   });
 
   return (
-    <button
-      className={buttonClass}
-      onClick={handleActionClick}
-    >
+    <button className={buttonClass} onClick={handleActionClick}>
       {text}
     </button>
   );
@@ -47,15 +44,16 @@ export default function SkillCard({
   const [isEditing, setIsEditing] = useState(false);
   const [titleText, setTitleText] = useState("");
 
-  const handleActionClick: MouseEventHandler = () => {
+  const handleActionClick: MouseEventHandler = (e) => {
     if (skill.isRunning) {
       dispatch({ type: SkillsActionType.STOP, payload: skill.id });
     } else {
       dispatch({ type: SkillsActionType.START, payload: skill.id });
     }
+    e.stopPropagation();
   };
 
-  const handleEditClick = () => {
+  const handleEditClick: MouseEventHandler = (e) => {
     if (isEditing) {
       dispatch({
         type: SkillsActionType.CHANGE_TITLE,
@@ -65,6 +63,21 @@ export default function SkillCard({
       setTitleText(skill.title);
     }
     setIsEditing(!isEditing);
+    e.stopPropagation();
+  };
+
+  const handleDeleteClick: MouseEventHandler = (e) => {
+    const goAhead = confirm(
+      "Are you sure you want to DELETE this skill? There is no going back."
+    );
+
+    if (goAhead) {
+      dispatch({
+        type: SkillsActionType.DELETE_SKILL,
+        payload: { id: skill.id },
+      });
+    }
+    e.stopPropagation();
   };
 
   const timeObj = toTimeObject(skill.duration);
@@ -93,6 +106,9 @@ export default function SkillCard({
           "bg-white": !skill.isRunning,
         }
       )}
+      role="button"
+      tabIndex={0}
+      onClick={handleActionClick}
     >
       <div className="flex space-x-2">
         <div className="flex-1">{content} </div>
@@ -104,12 +120,7 @@ export default function SkillCard({
         </button>
         <button
           className="border border-solid border-black bg-white px-1 text-black hover:bg-gray-50"
-          onClick={() =>
-            dispatch({
-              type: SkillsActionType.DELETE_SKILL,
-              payload: { id: skill.id },
-            })
-          }
+          onClick={handleDeleteClick}
         >
           Delete
         </button>
@@ -118,10 +129,6 @@ export default function SkillCard({
       <div className="text-center">
         Progress: {skill.currentEffort}/{skill.goalEFfort}
       </div>
-      <ActionButton
-        isRunning={skill.isRunning}
-        handleActionClick={handleActionClick}
-      />
     </div>
   );
 }
