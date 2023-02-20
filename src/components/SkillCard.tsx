@@ -29,7 +29,6 @@ const ActionButton: FunctionComponent<ActionButtonProps> = ({
     <button
       className={buttonClass}
       onClick={handleActionClick}
-      disabled={!isRunning}
     >
       {text}
     </button>
