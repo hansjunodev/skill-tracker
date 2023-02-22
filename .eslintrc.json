@@ -47,6 +47,8 @@
   ],
   "rules": {
     // ...add rules which you'd like to disable
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "jsx-a11y/click-events-have-key-events": "off"
   }
 }

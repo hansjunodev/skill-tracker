@@ -1,36 +1,7 @@
 import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
-import {
-  useState,
-  useEffect,
-  useRef,
-  Dispatch,
-  FunctionComponent,
-  MouseEventHandler,
-} from "react";
 import classNames from "classnames";
-
-interface ActionButtonProps {
-  isRunning: boolean;
-  handleActionClick: MouseEventHandler;
-}
-
-const ActionButton: FunctionComponent<ActionButtonProps> = ({
-  isRunning,
-  handleActionClick,
-}) => {
-  const text = isRunning ? "Stop" : "Start";
-  const buttonClass = classNames("flex-1 rounded", {
-    "bg-red-200 text-black": isRunning,
-    "bg-green-200 text-black": !isRunning,
-  });
-
-  return (
-    <button className={buttonClass} onClick={handleActionClick}>
-      {text}
-    </button>
-  );
-};
+import { Dispatch, MouseEventHandler, useState } from "react";
 
 interface SkillCardProps {
   skill: Skill;
@@ -94,7 +65,7 @@ export default function SkillCard({
       />
     );
   } else {
-    content = <>{skill.title}</>;
+    content = skill.title;
   }
 
   return (
@@ -115,12 +86,14 @@ export default function SkillCard({
         <button
           className="rounded px-1 text-black hover:shadow hover:shadow-black"
           onClick={handleEditClick}
+          type="button"
         >
           {isEditing ? "Save" : "Edit"}
         </button>
         <button
           className="rounded px-1 text-black hover:shadow hover:shadow-black"
           onClick={handleDeleteClick}
+          type="button"
         >
           Delete
         </button>

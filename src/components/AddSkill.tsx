@@ -18,6 +18,7 @@ export default function AddSkill({ onAddSkill }: AddSkillProps): JSX.Element {
       />
       <button
         className="border border-solid border-black px-2 hover:bg-gray-50"
+        type="button"
         onClick={() => {
           setText("");
           onAddSkill(text);
