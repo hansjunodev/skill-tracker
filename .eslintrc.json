@@ -35,6 +35,7 @@
     "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
+    // "plugin:react/jsx-runtime",
     "prettier"
     // "eslint:recommended",
     // "plugin:react/recommended",
@@ -46,5 +47,6 @@
   ],
   "rules": {
     // ...add rules which you'd like to disable
+    "react/react-in-jsx-scope": "off"
   }
 }
