@@ -1,4 +1,8 @@
+import AddSkill from "@/components/AddSkill";
+import Kbd from "@/components/Kbd";
 import SkillCard from "@/components/SkillCard";
+import { skillsReducer } from "@/reducers/skillsReducer";
+import { Skill, SkillsActionType } from "@/types/skill";
 import Head from "next/head";
 import {
   KeyboardEventHandler,
@@ -6,11 +10,7 @@ import {
   useEffect,
   useReducer,
   useRef,
-  useState,
 } from "react";
-import { SkillsActionType, Skill } from "@/types/skill";
-import AddSkill from "@/components/AddSkill";
-import { skillsReducer } from "@/reducers/skillsReducer";
 
 export default function Home(): JSX.Element {
   const [state, dispatch] = useReducer(skillsReducer, []);
@@ -18,20 +18,15 @@ export default function Home(): JSX.Element {
   const intervalRef = useRef<number>(null);
   const handleKeyUp = useCallback<KeyboardEventHandler>(
     (e) => {
-      const num = Number.parseInt(e.key) - 1;
+      const num = Number.parseInt(e.key, 10) - 1;
 
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         if (num < state.length) {
-          const id = state[num].id;
-          const isRunning = state[num].isRunning;
+          const { id } = state[num];
+          const { isRunning } = state[num];
 
           // TODO: Create a TOGGLE Action
           dispatch({
-            type: isRunning ? SkillsActionType.STOP : SkillsActionType.START,
-            payload: id,
-          });
-
-          console.log({
             type: isRunning ? SkillsActionType.STOP : SkillsActionType.START,
             payload: id,
           });
@@ -109,8 +104,14 @@ export default function Home(): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="mx-auto my-5 flex max-w-xs flex-col items-center space-y-2">
-        {state.map((skill) => (
-          <SkillCard key={skill.id} skill={skill} dispatch={dispatch} />
+        {state.map((skill, i) => (
+          <div
+            key={skill.id}
+            className="flex w-full items-center justify-end space-x-5"
+          >
+            <Kbd>{i + 1}</Kbd>
+            <SkillCard skill={skill} dispatch={dispatch} />
+          </div>
         ))}
         <AddSkill onAddSkill={handleAddSkillClick} />
       </main>
