@@ -73,8 +73,8 @@ export default function SkillCard({
       className={classNames(
         "flex w-full select-none flex-col p-2 shadow shadow-black",
         {
-          "bg-green-100": skill.isRunning,
-          "bg-white": !skill.isRunning,
+          "bg-green-100 hover:bg-green-200": skill.isRunning,
+          "bg-white hover:bg-gray-100": !skill.isRunning,
         }
       )}
       role="button"
