@@ -9,7 +9,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useRef
+  useRef,
 } from "react";
 
 export default function Home(): JSX.Element {
@@ -103,7 +103,7 @@ export default function Home(): JSX.Element {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="mx-auto my-5 flex max-w-xs flex-col items-center space-y-2">
+      <main className="mx-auto flex min-h-screen max-w-xs flex-col items-center justify-center space-y-2">
         {state.map((skill, i) => (
           <div
             key={skill.id}
