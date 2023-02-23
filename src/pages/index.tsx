@@ -1,7 +1,7 @@
 import AddSkill from "@/components/AddSkill";
 import Kbd from "@/components/Kbd";
 import SkillCard from "@/components/SkillCard";
-import { skillsReducer } from "@/reducers/skillsReducer";
+import skillsReducer from "@/reducers/skillsReducer";
 import { Skill, SkillsActionType } from "@/types/skill";
 import Head from "next/head";
 import {
@@ -9,7 +9,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useRef,
+  useRef
 } from "react";
 
 export default function Home(): JSX.Element {

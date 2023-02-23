@@ -1,11 +1,8 @@
+import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { Reducer } from "react";
-import { SkillsActionType, SkillsAction, Skill } from "@/types/skill";
 import { v4 as uuidv4 } from "uuid";
 
-export const skillsReducer: Reducer<Skill[], SkillsAction> = (
-  state,
-  action
-) => {
+const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -34,9 +31,8 @@ export const skillsReducer: Reducer<Skill[], SkillsAction> = (
       const newItems = state.map((s) => {
         if (s.id === id) {
           return { ...s, duration: s.duration + durationToAdd };
-        } else {
-          return s;
         }
+        return s;
       });
 
       return newItems;
@@ -52,9 +48,8 @@ export const skillsReducer: Reducer<Skill[], SkillsAction> = (
       const newItems = state.map((s) => {
         if (s.id === id) {
           return { ...s, title };
-        } else {
-          return s;
         }
+        return s;
       });
 
       return newItems;
@@ -67,5 +62,9 @@ export const skillsReducer: Reducer<Skill[], SkillsAction> = (
       return state.map((s) =>
         s.id === payload ? { ...s, isRunning: false } : s
       );
+    default:
+      return state;
   }
 };
+
+export default skillsReducer;
