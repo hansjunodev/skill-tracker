@@ -1,10 +1,3 @@
-export type History = Entry[];
-
-export interface Entry {
-  action: "START" | "STOP";
-  timestamp: Date;
-}
-
 export interface Skill {
   id: string;
   title: string;
@@ -12,7 +5,6 @@ export interface Skill {
   currentEffort: number;
   goalEFfort: number;
   isRunning: boolean;
-  history: Entry[];
 }
 
 export enum SkillsActionType {
@@ -24,8 +16,6 @@ export enum SkillsActionType {
   CHANGE_TITLE = "CHANGE_TITLE",
   START = "START",
   STOP = "STOP",
-  UNDO = "UNDO",
-  REDO = "REDO",
 }
 
 export interface AddDurationAction {
@@ -75,16 +65,6 @@ export interface StopAction {
   payload: string;
 }
 
-export interface UndoAction {
-  type: SkillsActionType.UNDO;
-  payload: string;
-}
-
-export interface RedoAction {
-  type: SkillsActionType.REDO;
-  payload: string;
-}
-
 export type SkillsAction =
   | AddDurationAction
   | CreateSkillAction
@@ -93,6 +73,4 @@ export type SkillsAction =
   | LoadStateAction
   | ChangeTitleAction
   | StartAction
-  | StopAction
-  | UndoAction
-  | RedoAction;
+  | StopAction;

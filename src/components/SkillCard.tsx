@@ -51,15 +51,6 @@ export default function SkillCard({
     e.stopPropagation();
   };
 
-  // let total = 0;
-  // for (let i = 1; i < skill.history.length; i += 2) {
-  //   const from = skill.history[i - 1];
-  //   const to = skill.history[i];
-  //   const duration = to.timestamp - from.timestamp;
-  //   total += duration;
-  // }
-  // const timeObj = toTimeObject(total);
-
   const timeObj = toTimeObject(skill.duration);
   const timeString = `${timeObj.hours}h ${timeObj.minutes}m ${timeObj.seconds}s`;
 
@@ -105,16 +96,6 @@ export default function SkillCard({
           type="button"
         >
           Delete
-        </button>
-        <button
-          className="rounded px-1 text-black hover:shadow hover:shadow-black"
-          onClick={(e) => {
-            dispatch({ type: SkillsActionType.UNDO, payload: skill.id });
-            e.stopPropagation();
-          }}
-          type="button"
-        >
-          Rollback
         </button>
       </div>
       <div className="text-center font-mono">{timeString} </div>
