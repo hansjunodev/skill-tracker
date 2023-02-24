@@ -1,6 +1,23 @@
-import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
+import { History, Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { Reducer } from "react";
 import { v4 as uuidv4 } from "uuid";
+
+export function calculateTotalDuration(history: History): number {
+  let total = 0;
+
+  for (let i = 1; i < history.length; i += 2) {
+    const from = history[i - 1];
+    const to = history[i];
+    const duration = to.timestamp - from.timestamp;
+
+    total += duration;
+  }
+
+  console.log(history.length);
+  console.log(total);
+
+  return total;
+}
 
 const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
   const { type, payload } = action;
@@ -17,6 +34,7 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
           duration: 0,
           goalEFfort: 0,
           title: payload,
+          history: [],
         },
       ];
     }
@@ -56,12 +74,44 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
     }
     case SkillsActionType.START:
       return state.map((s) =>
-        s.id === payload ? { ...s, isRunning: true } : s
+        s.id === payload
+          ? {
+              ...s,
+              isRunning: true,
+              history: [
+                ...s.history,
+                { action: "START", timestamp: new Date() },
+              ],
+            }
+          : s
       );
     case SkillsActionType.STOP:
       return state.map((s) =>
-        s.id === payload ? { ...s, isRunning: false } : s
+        s.id === payload
+          ? {
+              ...s,
+              isRunning: false,
+              history: [
+                ...s.history,
+                { action: "STOP", timestamp: new Date() },
+              ],
+            }
+          : s
       );
+    case SkillsActionType.UNDO: {
+      return state.map((s) => {
+        if (s.id === payload) {
+          return {
+            ...s,
+            isRunning: s.isRunning,
+            history: s.history.slice(0, -1),
+            duration: calculateTotalDuration(s.history.slice(0, -1)),
+          };
+        }
+        return s;
+      });
+    }
+
     default:
       return state;
   }
