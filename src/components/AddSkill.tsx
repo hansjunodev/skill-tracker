@@ -15,6 +15,11 @@ export default function AddSkill({ onAddSkill }: AddSkillProps): JSX.Element {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyUp={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onAddSkill(text);
+          }
+        }}
       />
       <button
         className="border border-solid border-black px-2 hover:bg-gray-50"

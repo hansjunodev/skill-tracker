@@ -9,7 +9,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useRef
+  useRef,
 } from "react";
 
 export default function Home(): JSX.Element {
