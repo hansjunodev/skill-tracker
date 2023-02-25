@@ -8,9 +8,9 @@ export default function AddSkill({ onAddSkill }: AddSkillProps): JSX.Element {
   const [text, setText] = useState("");
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full space-x-2">
       <input
-        className="flex-1 rounded-l-full border border-black px-3 py-1"
+        className="flex-1 px-3 py-1 shadow shadow-gray-400"
         placeholder="Add skill"
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -18,12 +18,13 @@ export default function AddSkill({ onAddSkill }: AddSkillProps): JSX.Element {
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             onAddSkill(text);
+            setText("");
           }
         }}
       />
       <button
-        className="border border-solid border-black px-2 hover:bg-gray-50"
-        type="button"
+        className="rounded px-1 text-black shadow  hover:shadow-black"
+        type="submit"
         onClick={() => {
           setText("");
           onAddSkill(text);
