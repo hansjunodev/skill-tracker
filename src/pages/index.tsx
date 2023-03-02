@@ -9,7 +9,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useRef,
+  useRef
 } from "react";
 
 export default function Home(): JSX.Element {
@@ -39,8 +39,8 @@ export default function Home(): JSX.Element {
     [state]
   );
 
-  const handleAddSkillClick = (title: string) => {
-    dispatch({ type: SkillsActionType.CREATE_SKILL, payload: title });
+  const handleAddSkillClick = () => {
+    dispatch({ type: SkillsActionType.CREATE_SKILL, payload: null });
   };
 
   useEffect(() => {

@@ -16,7 +16,7 @@ const skillsReducer: Reducer<Skill[], SkillsAction> = (state, action) => {
           currentEffort: 0,
           duration: 0,
           goalEFfort: 0,
-          title: payload,
+          title: payload || "Untitled",
         },
       ];
     }
