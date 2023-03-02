@@ -1,4 +1,4 @@
-import { MouseEventHandler, useRef } from "react";
+import { MouseEventHandler, useEffect, useRef } from "react";
 
 const useOutsideClick = (callback) => {
   // From https://www.robinwieruch.de/react-hook-detect-click-outside-component/
@@ -14,7 +14,7 @@ const useOutsideClick = (callback) => {
 
     document.addEventListener("click", handleClick, true);
 
-    return () => document.removeEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick, true);
   }, [ref, callback]);
 
   return ref;
