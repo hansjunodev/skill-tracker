@@ -1,7 +1,8 @@
+import useOutsideClick from "@/hooks/useOutsideClick";
 import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
 import classNames from "classnames";
-import { Dispatch, MouseEventHandler, useState } from "react";
+import { Dispatch, MouseEventHandler, useCallback, useState } from "react";
 
 interface SkillCardProps {
   skill: Skill;
@@ -14,6 +15,16 @@ export default function SkillCard({
 }: SkillCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [titleText, setTitleText] = useState("");
+  const handleOutsideClick = useCallback(() => {
+    if (isEditing)
+      dispatch({
+        type: SkillsActionType.CHANGE_TITLE,
+        payload: { id: skill.id, title: titleText },
+      });
+    setIsEditing(!isEditing);
+  }, [dispatch, isEditing, skill.id, titleText]);
+
+  const ref = useOutsideClick(handleOutsideClick);
 
   const handleActionClick: MouseEventHandler = (e) => {
     if (skill.isRunning) {
@@ -59,13 +70,28 @@ export default function SkillCard({
   if (isEditing) {
     content = (
       <input
+        ref={ref}
+        className="bg-none"
         type="text"
-        onChange={(e) => setTitleText(e.target.value)}
+        onChange={(e) => {
+          setTitleText(e.target.value);
+          e.stopPropagation();
+        }}
+        onClick={(e) => e.stopPropagation()}
         value={titleText}
       />
     );
   } else {
-    content = skill.title;
+    // content = skill.title;
+    content = (
+      <button
+        className="rounded px-1 text-black hover:shadow hover:shadow-black"
+        onClick={handleEditClick}
+        type="button"
+      >
+        {skill.title}
+      </button>
+    );
   }
 
   return (
@@ -84,18 +110,11 @@ export default function SkillCard({
       <div className="flex space-x-2">
         <div className="flex-1">{content} </div>
         <button
-          className="rounded px-1 text-black hover:shadow hover:shadow-black"
-          onClick={handleEditClick}
-          type="button"
-        >
-          {isEditing ? "Save" : "Edit"}
-        </button>
-        <button
-          className="rounded px-1 text-black hover:shadow hover:shadow-black"
+          className="rounded px-1 text-gray-300 hover:text-black hover:shadow"
           onClick={handleDeleteClick}
           type="button"
         >
-          Delete
+          X
         </button>
       </div>
       <div className="text-center font-mono">{timeString} </div>
