@@ -1,5 +1,4 @@
 import AddSkill from "@/components/AddSkill";
-import Kbd from "@/components/Kbd";
 import SkillCard from "@/components/SkillCard";
 import skillsReducer from "@/reducers/skillsReducer";
 import { Skill, SkillsActionType } from "@/types/skill";
@@ -109,10 +108,11 @@ export default function Home(): JSX.Element {
             key={skill.id}
             className="flex w-full items-center justify-end space-x-5"
           >
-            <Kbd>{i + 1}</Kbd>
+            {/* <Kbd>{i + 1}</Kbd> */}
             <SkillCard skill={skill} dispatch={dispatch} />
           </div>
         ))}
+
         <AddSkill onAddSkill={handleAddSkillClick} />
       </main>
     </>
