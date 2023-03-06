@@ -6,8 +6,7 @@ export default function EditableTitle(): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const handleOutsideClick = useCallback(() => {
     if (isEditing) setIsEditing(false);
-  }, [isEditing, titleText]);
-
+  }, [isEditing]);
   const ref = useOutsideClick(handleOutsideClick);
 
   const handleTextChange = (e: InputEvent) => {
