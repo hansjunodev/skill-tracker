@@ -2,7 +2,13 @@ import useOutsideClick from "@/hooks/useOutsideClick";
 import { Skill, SkillsAction, SkillsActionType } from "@/types/skill";
 import { toTimeObject } from "@/utils/utils";
 import classNames from "classnames";
-import { Dispatch, MouseEventHandler, useCallback, useState } from "react";
+import {
+  Dispatch,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 
 interface SkillCardProps {
   skill: Skill;
@@ -14,7 +20,7 @@ export default function SkillCard({
   dispatch,
 }: SkillCardProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
-  const [titleText, setTitleText] = useState("");
+  const [titleText, setTitleText] = useState(skill.title);
   const handleOutsideClick = useCallback(() => {
     if (isEditing)
       dispatch({
@@ -27,72 +33,37 @@ export default function SkillCard({
   const ref = useOutsideClick(handleOutsideClick);
 
   const handleActionClick: MouseEventHandler = (e) => {
-    if (skill.isRunning) {
-      dispatch({ type: SkillsActionType.STOP, payload: skill.id });
-    } else {
-      dispatch({ type: SkillsActionType.START, payload: skill.id });
-    }
-    e.stopPropagation();
-  };
-
-  const handleEditClick: MouseEventHandler = (e) => {
-    if (isEditing) {
-      dispatch({
-        type: SkillsActionType.CHANGE_TITLE,
-        payload: { id: skill.id, title: titleText },
-      });
-    } else {
-      setTitleText(skill.title);
-    }
-    setIsEditing(!isEditing);
+    const action = skill.isRunning
+      ? SkillsActionType.STOP
+      : SkillsActionType.START;
+    dispatch({ type: action, payload: skill.id });
     e.stopPropagation();
   };
 
   const handleDeleteClick: MouseEventHandler = (e) => {
-    const goAhead = confirm(
-      "Are you sure you want to DELETE this skill? There is no going back."
-    );
-
-    if (goAhead) {
-      dispatch({
-        type: SkillsActionType.DELETE_SKILL,
-        payload: { id: skill.id },
-      });
-    }
+    dispatch({
+      type: SkillsActionType.DELETE_SKILL,
+      payload: { id: skill.id },
+    });
     e.stopPropagation();
   };
 
+  const handleTitleChange: InputEventHandler = (e) => {
+    setTitleText(e.target.value);
+    e.stopPropagation();
+  };
+
+  useEffect(
+    () =>
+      dispatch({
+        type: SkillsActionType.CHANGE_TITLE,
+        payload: { id: skill.id, title: titleText },
+      }),
+    [dispatch, skill.id, titleText]
+  );
+
   const timeObj = toTimeObject(skill.duration);
   const timeString = `${timeObj.hours}h ${timeObj.minutes}m ${timeObj.seconds}s`;
-
-  let content;
-
-  if (isEditing) {
-    content = (
-      <input
-        ref={ref}
-        className="bg-none"
-        type="text"
-        onChange={(e) => {
-          setTitleText(e.target.value);
-          e.stopPropagation();
-        }}
-        onClick={(e) => e.stopPropagation()}
-        value={titleText}
-      />
-    );
-  } else {
-    // content = skill.title;
-    content = (
-      <button
-        className="rounded px-1 text-black hover:shadow hover:shadow-black"
-        onClick={handleEditClick}
-        type="button"
-      >
-        {skill.title}
-      </button>
-    );
-  }
 
   return (
     <div
@@ -108,7 +79,14 @@ export default function SkillCard({
       onClick={handleActionClick}
     >
       <div className="flex space-x-2">
-        <div className="flex-1">{content} </div>
+        <input
+          ref={ref}
+          className="flex-1 border-b border-b-black bg-inherit hover:bg-none focus:bg-none focus:outline-none"
+          type="text"
+          onChange={handleTitleChange}
+          onClick={(e) => e.stopPropagation()}
+          value={titleText}
+        />
         <button
           className="rounded px-1 text-gray-300 hover:text-black hover:shadow"
           onClick={handleDeleteClick}
