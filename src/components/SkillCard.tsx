@@ -81,7 +81,7 @@ export default function SkillCard({
       <div className="flex space-x-2">
         <input
           ref={ref}
-          className="flex-1 border-b border-b-black bg-inherit hover:bg-none focus:bg-none focus:outline-none"
+          className="flex-1 hover:border-b bg-inherit hover:bg-none focus:border-b focus:border-b-black focus:bg-none focus:outline-none"
           type="text"
           onChange={handleTitleChange}
           onClick={(e) => e.stopPropagation()}
