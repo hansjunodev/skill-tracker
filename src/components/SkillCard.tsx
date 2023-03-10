@@ -64,7 +64,12 @@ export default function SkillCard({
   );
 
   const timeObj = toTimeObject(skill.duration);
-  const timeString = `${timeObj.hours}h ${timeObj.minutes}m ${timeObj.seconds}s`;
+  // const timeString = `${timeObj.hours}h ${timeObj.minutes}m ${timeObj.seconds}s`;
+  const timeString = `${timeObj.hours
+    .toString()
+    .padStart(2, "0")}:${timeObj.minutes
+    .toString()
+    .padStart(2, "0")}:${timeObj.seconds.toString().padStart(2, "0")}`;
 
   return (
     <div
@@ -97,7 +102,7 @@ export default function SkillCard({
           X
         </button>
       </div>
-      <div className="text-center font-mono text-lg">{timeString} </div>
+      <div className="text-center text-lg">{timeString} </div>
     </div>
   );
 }
