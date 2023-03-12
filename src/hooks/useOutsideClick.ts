@@ -1,6 +1,6 @@
 import { MouseEventHandler, useEffect, useRef } from "react";
 
-const useOutsideClick = (callback) => {
+const useOutsideClick = (callback: Function) => {
   // From https://www.robinwieruch.de/react-hook-detect-click-outside-component/
 
   const ref = useRef<Element>();
